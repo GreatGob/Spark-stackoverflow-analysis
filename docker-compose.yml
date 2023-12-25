@@ -13,7 +13,7 @@ services:
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
     ports:
-      - "8180:8080"
+      - "8080:8080"
     volumes:
       - ./spark/:/usr/local/share/spark/
       - ./data:/usr/local/share/data/
