@@ -1,8 +1,24 @@
 version: '3.7'
 
 services:
+  mongo-db:
+    container_name: mongodb
+    build: .
+    hostname: mongo
+    user: root
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=stackoverflow
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - mongo-db-volume:/data/db/
+      - ./data/:/usr/local/share/
+
   spark-master:
-    image: bitnami/spark:3.4.1
+    container_name: spark-master
+    image: bitnami/spark:3.5
     user: root
     hostname: spark
     environment:
@@ -16,12 +32,11 @@ services:
       - "8080:8080"
     volumes:
       - ./spark/:/usr/local/share/spark/
-      - ./data:/usr/local/share/data/
-    networks:
-      - my_db_net    
+      - ./data:/usr/local/share/data/  
 
   spark-worker:
-    image: bitnami/spark:3.4.1
+    container_name: spark-worker
+    image: bitnami/spark:3.5
     user: root
     environment:
       - SPARK_MODE=worker
@@ -33,28 +48,9 @@ services:
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
-    volumes:
-      - ./spark/:/usr/local/share/spark/
-    networks:
-      - my_db_net
-
-  mongo:
-    build: . 
-    hostname: mongo
-    user: root
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_DATABASE=stackoverflow
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
-    volumes:
-      - mongo-db-volume:/data/mongo/db/
-      - ./data/:/usr/local/share/
-    networks:
-      - my_db_net
 
   kafka:
+    container_name: kafka
     image: 'bitnami/kafka:3.3.2'
     ports:
       - '9092:9092'
@@ -67,11 +63,6 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
     volumes:
       - ./data:/usr/local/share/data/
-    networks:
-      - my_db_net
 
 volumes:
   mongo-db-volume:
-
-networks:
-  my_db_net:

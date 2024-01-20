@@ -2,9 +2,7 @@ FROM mongo:6.0.4-jammy
 
 USER root
 
-###############################
-## Install MongoDB Tools
-###############################
+# Install MongoDB Tools
 RUN apt-get update && apt-get install -y curl
 
 RUN cd "/tmp" \
