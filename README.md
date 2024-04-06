@@ -1,19 +1,19 @@
-## Analyze Stack Overflow user behavior and habits
+## Analyze Stackoverflow User Behavior and Habits
 
-- Source data:
-    https://drive.google.com/drive/folders/1uq4TNKlSE-a_UuVSUSidartcUtRGmS30
+### Source Data
+- [Data Source](https://drive.google.com/drive/folders/1uq4TNKlSE-a_UuVSUSidartcUtRGmS30)
 
-- Authentication Database:
-    mongosh -u admin -p admin --authenticationDatabase admin
+### Authentication Database
+```
+mongosh -u <username> -p <password> --authenticationDatabase <name>
+```
 
-- Import data file to MongoDB:
-    mongoimport --host localhost:27017 -u admin -p admin --authenticationDatabase admin --type csv -d stack_overflow -c questions --headerline --drop Questions.csv
-    mongoimport --host localhost:27017 -u admin -p admin --authenticationDatabase admin --type csv -d stack_overflow -c answers --headerline --drop Answers.csv
+### Import Data File to MongoDB
+```
+mongoimport --host <host> -u <username> -p <password> --authenticationDatabase <name> --type csv -d <database_name> -c <collection_name> --headerline --drop filename.csv
+```
 
-- Run Spark:
-    spark-submit --packages org.mongodb.spark:mongo-spark-connector_2.12:3.0.0 main.py
-
-- Install venv:
-    virtualenv stackoverflow_venv
-    source stackoverflow_venv/bin/activate
-    pip install -r requirements/local.txt
+### Run Spark
+```
+spark-submit --packages org.mongodb.spark:mongo-spark-connector_2.12:<version> <filename>.py
+```
